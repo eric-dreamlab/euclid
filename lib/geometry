@@ -1,0 +1,65 @@
+module Geometry
+
+    class Vector
+
+        attr_accessor :elements
+
+        def initialize(elems)
+            self.elements = elems
+        end
+
+        def dimensions
+            elements.length
+        end
+
+        def to_s
+            "Vector " + elements.to_s
+        end
+
+        def +(other)
+            Vector.new elements.zip(other.elements).map { |e1, e2| e1 + e2 }
+        end
+
+        def scalar_product(k)
+            Vector.new elements.map{ |e| e * k }
+        end
+
+        def inner_product(v)
+            (elements.zip(v.elements).map { |e1, e2|  e1 * e2}).reduce(:+)
+
+        end
+
+        def norm
+            Math.sqrt(elements.reduce(0) { |acc, e| acc + e * e })
+        end
+
+        def angle_between(v, radian: true)
+            result = Math.acos(self.inner_product(v) / (self.norm * v.norm))
+            result = result * 180 / Math::PI unless radian
+        end
+
+    end
+
+
+    class Vector2D < Vector
+
+        def self.from_two_points(x1, y1, x2, y2)
+            Vector.new ([x2 - x1, y2 - y1])
+        end
+
+    end
+
+
+    
+    class Vector3D < Vector
+        
+        def self.from_two_points(x1, y1, z1, x2, y2, z2)
+            Vector.new([x2 - x1, y2 - y1, z2 - z1])
+        end
+
+        def vector_product
+        end
+    end
+
+
+end
